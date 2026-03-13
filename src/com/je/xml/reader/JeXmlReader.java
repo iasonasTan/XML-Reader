@@ -2,6 +2,7 @@ package com.je.xml.reader;
 
 import com.je.utils.Console;
 import com.je.utils.IterableNodeList;
+import com.je.xml.JeXmlConstants;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -10,33 +11,23 @@ import javax.xml.parsers.*;
 import org.xml.sax.*;
 import java.util.*;
 
-public class JeXmlReader<T> {
-	public static final String FORMAT_NODE_VALUE = "je.reader.format.<fieldName>value</fieldName>";
+public class JeXmlReader<T> implements JeXmlConstants {
+	
+
+	public T read(InputStream input, Class<T> clazz) {
+		return read(input, clazz, FORMAT_NODE_VALUE);
+	}
 
 	public T read(InputStream input, Class<T> clazz, String formatType) {
-		// String xml = null;
-		// try(BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
-		// 	StringBuilder builder = new StringBuilder();
-		// 	String line = null;
-		// 	while((line = reader.readLine()) != null) {
-		// 		builder.append(line);
-		// 	}
-		// 	xml = builder.toString();
-		// } catch (IOException e) {
-		// 	throw new RuntimeException(e);
-		// }
-		// assert xml != null;
-
 		T t;
-
+		
 		try {
 			Constructor<T> constructor = clazz.getConstructor();
 			constructor.setAccessible(true);
 			t = constructor.newInstance();
-		} catch (InstantiationException | 
-				IllegalAccessException | 
-				InvocationTargetException |
-				NoSuchMethodException e) {
+		} catch (InstantiationException | IllegalAccessException | 
+				InvocationTargetException | NoSuchMethodException e) {
+
 			throw new RuntimeException(e);
 		}
 		assert t != null;
@@ -53,12 +44,11 @@ public class JeXmlReader<T> {
 		assert document != null;
 
 		try {
-		Console.get().debug("Working with class "+clazz.getName());
-		Field[] fields = clazz.getFields();
-
-        for(Field field: fields){
-            readValueInNode(document, t, field);
-        }
+			Console.get().debug("Working with class "+clazz.getName());
+		    for(Field field: clazz.getFields()){
+		    	field.setAccessible(true);
+		        readValueInNode(document, t, field);
+		    }
         } catch (Exception e) {
         	Console.get().debug(e);
         }

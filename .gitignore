@@ -2,3 +2,5 @@ jars/*
 out/*
 Test/jars/*
 Test/out/*
+params.txt
+output.xml

@@ -2,17 +2,16 @@ package main;
 
 import com.je.xml.reader.JeXmlReader;
 import com.je.console.ConsoleController;
+import java.io.*;
+import com.je.xml.writer.JeXmlWriter;
 
 public class Main {
 	public static final class Data {
-		public String yes;
-		public String hello;
-		public String no;
-		public String value;
-	
+		public String yes, hello, no, value;
+
 		public Data() {
 		}
-		
+
 		@Override
 		public String toString() {
 		    return "Data{"+yes+", "+hello+", "+no+", "+value+"}";
@@ -21,10 +20,15 @@ public class Main {
 
 	public static void main(String[] args) {
 		ConsoleController.setConsoleEnabled(true);
+		InputStream xmlStream = Main.class.getResourceAsStream("/data.xml");
 		JeXmlReader<Data> reader = new JeXmlReader<>();
-		Data d = reader.read(Main.class.getResourceAsStream("/data.xml"),
-			Data.class,
-			JeXmlReader.FORMAT_NODE_VALUE);
+		Data d = reader.read(xmlStream, Data.class);
+		d.value = "This is changed...";
 		IO.println(d);
+		try (OutputStream outputStream = new FileOutputStream(args[0])) {
+			new JeXmlWriter<Data>().write(outputStream, d);
+		} catch (Exception e) {
+			IO.println(e);
+		}
 	}
 }

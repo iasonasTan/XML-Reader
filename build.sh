@@ -1,17 +1,17 @@
 #!/bin/bash
 set -e
 
-echo "Compiling library..."
+echo "[BUILD] Compiling library..."
 javac -d out \
     -Xlint:unchecked \
 	$(find src/ -type f -name "*.java")
 
-echo "Packaging library..."
+echo "[BUILD] Packaging library..."
 jar --create \
 	--file jars/JeXmlReader.jar \
 	-C out .
 
-echo "Compiling test program..."
+echo "[BUILD] Compiling test program..."
 cd Test	
 javac -d out/ \
     -Xlint:unchecked \
@@ -19,11 +19,11 @@ javac -d out/ \
 	--add-modules JeXmlReader \
 	$(find src/ -type f -name "*.java")
 
-echo "Packaging test program..."
+echo "[BUILD] Packaging test program..."
 jar --create \
 	--main-class main.Main \
 	--file jars/TestApp.jar \
 	-C out . \
 	-C res/main .
 
-echo "Done!"
+echo "[BUILD] Done!"

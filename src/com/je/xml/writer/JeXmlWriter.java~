@@ -1,0 +1,7 @@
+package com.je.xml.writer;
+
+import com.je.utils.Console;
+
+public class JeXmlWriter<T> implements JeXmlConstants {
+    
+}

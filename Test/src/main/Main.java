@@ -14,7 +14,12 @@ public class Main {
 
 		@Override
 		public String toString() {
-		    return "Data{"+yes+", "+hello+", "+no+", "+value+"}";
+		    return "Data{\n\t"+
+				yes+",\n\t"+
+				hello+",\n\t"
+				+no+",\n\t"+
+				value+
+		    "\n}";
 		}
 	}
 

@@ -1,4 +1,7 @@
 #!/bin/bash
+set -e
+
+./build.sh
 
 cd Test
 echo "[RUN] Running Application..."

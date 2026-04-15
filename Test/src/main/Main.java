@@ -28,8 +28,10 @@ public class Main {
 		InputStream xmlStream = Main.class.getResourceAsStream("/data.xml");
 		JeXmlReader<Data> reader = new JeXmlReader<>();
 		Data d = reader.read(xmlStream, Data.class);
+		IO.println("Unchanged: "+d);
 		d.value = "This is changed...";
-		IO.println(d);
+		d.hello = "This is changed...";
+		IO.println("Changed: "+d);
 		try (OutputStream outputStream = new FileOutputStream(args[0])) {
 			new JeXmlWriter<Data>().write(outputStream, d);
 		} catch (Exception e) {
